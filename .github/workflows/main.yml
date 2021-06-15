@@ -1,0 +1,77 @@
+name: Release to draft
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Specify tag to create'
+        required: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Packaging
+      - uses: actions/checkout@v2
+      - uses: papeloto/action-zip@v1
+        with:
+          files: base.toc base.lua
+          dest: OAH.zip
+
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.tag }}
+          release_name: ${{ github.event.inputs.tag }}
+          draft: true
+          prerelease: false
+      
+      - name: Add package
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ./OAH.zip
+          asset_name: OAH.zip
+          asset_content_type: application/zipname: Release to draft
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Specify tag to create'
+        required: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Packaging
+      - uses: actions/checkout@v2
+      - uses: papeloto/action-zip@v1
+        with:
+          files: base.toc base.lua
+          dest: OAH.zip
+
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.tag }}
+          release_name: ${{ github.event.inputs.tag }}
+          draft: true
+          prerelease: false
+      
+      - name: Add package
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ./OAH.zip
+          asset_name: OAH.zip
+          asset_content_type: application/zip

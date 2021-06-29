@@ -12,7 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Packaging
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
+        
       - uses: papeloto/action-zip@v1
         with:
           files: base.toc base.lua

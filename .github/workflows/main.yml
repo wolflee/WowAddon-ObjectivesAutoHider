@@ -27,6 +27,7 @@ jobs:
           release_name: ${{ github.event.inputs.tag }}
           draft: true
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Add package
         id: upload-release-asset 

@@ -1,11 +1,9 @@
-name: Release to draft
+name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Specify tag to create'
-        required: true
+  push:
+    tags:
+      - '*.*.*'
 
 jobs:
   run:
@@ -18,24 +16,11 @@ jobs:
         with:
           files: base.toc base.lua
           dest: OAH.zip
-
-      - name: Create Release
-        id: create-release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ github.event.inputs.tag }}
-          release_name: ${{ github.event.inputs.tag }}
-          draft: true
-          prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Add package
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: OAH.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./OAH.zip
-          asset_name: OAH.zip
-          asset_content_type: application/zip
+
